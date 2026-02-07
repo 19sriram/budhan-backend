@@ -1,6 +1,7 @@
 import "dotenv/config";
-import { toUserDto } from "../src/users/routes/v1/users/user.mapper.js";
+import { toUserDto } from "../src/routes/users/v1/users/user.mapper.js";
 import { pool, prisma } from "../src/db/prisma.js";
+import { logger } from "../src/utils/logger.js";
 
 async function main() {
   const users = [
@@ -27,12 +28,12 @@ async function main() {
   const allUsers = await prisma.user.findMany();
   const userDtos = allUsers.map(toUserDto);
 
-  console.log("Seed finished! Users:", userDtos);
+  logger.info({ users: userDtos }, "Seed finished");
 }
 
 main()
   .catch((e) => {
-    console.error(e);
+    logger.error({ err: e }, "Seed failed");
   })
   .finally(async () => {
     await prisma.$disconnect();

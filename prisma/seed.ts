@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { toUserDto } from "../src/users/user.mapper.js";
+import { toUserDto } from "../src/users/routes/v1/users/user.mapper.js";
 import { pool, prisma } from "../src/db/prisma.js";
 
 async function main() {

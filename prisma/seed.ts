@@ -16,13 +16,20 @@ async function main() {
   ];
 
   for (const u of users) {
-    await prisma.user.upsert({
+    const user = await prisma.user.upsert({
       where: {
         email: u.email,
         name: u.name,
       },
       update: {},
       create: u,
+    });
+    await prisma.session.create({
+      data: {
+        userId: BigInt("1234"),
+        token: `token-${user.email}`,
+        id: `session-${user.id}`,
+      },
     });
   }
   const allUsers = await prisma.user.findMany();
